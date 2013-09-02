@@ -7,10 +7,13 @@ var tmpl = (function() {
     {
         var tmpls = document.getElementsByClassName('tmpl');
 
-        for (var i = 0; i < tmpls.length; i++) {
+        for (var i = 0; i < tmpls.length;) {
             var t = tmpls[i];
 
             tmplMap[t.id] = cleanHTML(t.innerHTML);
+
+            // TODO: Find the vanilla js way to do this
+            $(t).remove(); // Also, remove() removes this el from the tmpls array, so we are always working with index 0
         }
     };
 
