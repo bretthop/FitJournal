@@ -12,6 +12,9 @@
     <h1>Fit Journal</h1>
     <button onclick="showAddMealDialog()" class="iblock">Add Meal</button>
     <button onclick="showAddWorkoutDialog()" class="iblock">Add Workout</button>
+    <div class="totalEnergyHolder">
+        Total net energy: <span class="totalEnergy">-</span>
+    </div>
     <div id="daysContainer">
         <div id="dayTmpl" class="tmpl">
             || _.forEach(days, function(day) { ||
@@ -28,7 +31,7 @@
                         </div>
                     || }); ||
 
-                    <div>
+                    <div class="dayTotal">
                         Net KJ: <span class="{{ day.colourCss }}">{{ day.netKj }}</span>
                     </div>
                 </div>
@@ -88,25 +91,29 @@
             $('#addEntryDialog').remove();
         }
 
-        function getDays()
+        function getJournalPeriod()
         {
-            $.ajax({url: '/journal', success: function(days){
-                addAdditionalProps(days);
+            $.ajax({url: '/journal', success: function(period){
+                addAdditionalProps(period);
 
                 var dayTmpl = tmpl.find('dayTmpl');
-                daysContainer.innerHTML += _.template(dayTmpl, {days: days});
+                daysContainer.innerHTML += _.template(dayTmpl, {days: period.days});
+
+                $('.totalEnergy').html(period.netKj).addClass(period.colourCss);
             }});
         }
 
-        function addAdditionalProps(days)
+        function addAdditionalProps(period)
         {
-            _.forEach(days, function(day) {
+            _.forEach(period.days, function(day) {
                 _.forEach(day.entries, function(entry) {
                     entry.colourCss = entry.kj > 0 ? 'red' : 'green';
                 });
 
                 day.colourCss = day.netKj > 0 ? 'red' : 'green';
             });
+
+            period.colourCss = period.netKj > 0 ? 'red' : 'green';
         }
 
         function formatDate(date)
@@ -123,7 +130,7 @@
 
         tmpl.scrape();
 
-        getDays();
+        getJournalPeriod();
     </script>
 </body>
 </html>

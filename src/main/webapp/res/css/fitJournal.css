@@ -6,6 +6,7 @@ body { font: 12px Verdana }
 .dayHolder { height: 500px; width: 180px; border: 1px solid lightblue; margin: 0 2px; }
 .dayHolder h2 { margin: 7px 0; }
 .entryHolder { height: 50px; }
+.dayTotal { margin-top: 10px; background: lightgray; }
 
 .iblock { display: inline-block; }
 .hidden { display: none; }

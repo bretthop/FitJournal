@@ -1,6 +1,7 @@
 package au.com.fitjournal.service;
 
 import au.com.fitjournal.bean.JournalDay;
+import au.com.fitjournal.bean.JournalPeriod;
 import au.com.fitjournal.data.dao.JournalEntryDao;
 import au.com.fitjournal.data.entity.JournalEntry;
 import au.com.fitjournal.util.DateUtil;
@@ -11,7 +12,7 @@ public class JournalService
 {
     private JournalEntryDao journalEntryDao = new JournalEntryDao();
 
-    public List<JournalDay> getJournalDays()
+    public JournalPeriod getJournalPeriod()
     {
         List<JournalEntry> allEntries = journalEntryDao.findAll();
 
@@ -40,7 +41,11 @@ public class JournalService
             day.addEntry(entry);
         }
 
-        return new ArrayList<>(days.values());
+        JournalPeriod period = new JournalPeriod();
+
+        period.setDays(new ArrayList<>(days.values()));
+
+        return period;
     }
 
     public JournalEntry save(JournalEntry entry)

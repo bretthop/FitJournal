@@ -1,6 +1,6 @@
 package au.com.fitjournal.servlet;
 
-import au.com.fitjournal.bean.JournalDay;
+import au.com.fitjournal.bean.JournalPeriod;
 import au.com.fitjournal.data.entity.JournalEntry;
 import au.com.fitjournal.factory.JournalFactory;
 import au.com.fitjournal.service.JournalService;
@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(urlPatterns = "/journal")
 public class JournalServlet extends HttpServlet
@@ -22,8 +21,8 @@ public class JournalServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
     {
-        List<JournalDay> days = journalService.getJournalDays();
-        ServletUtil.writeJson(res, days);
+        JournalPeriod period = journalService.getJournalPeriod();
+        ServletUtil.writeJson(res, period);
     }
 
     @Override
