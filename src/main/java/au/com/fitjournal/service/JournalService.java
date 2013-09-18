@@ -12,15 +12,27 @@ public class JournalService
 {
     private JournalEntryDao journalEntryDao = new JournalEntryDao();
 
-    public JournalPeriod getJournalPeriod()
+    public JournalPeriod getFullJournalPeriod()
     {
         List<JournalEntry> allEntries = journalEntryDao.findAll();
 
+        return this.toJournalPeriod(allEntries);
+    }
+
+    public JournalPeriod getJournalPeriod(Date startDate, Date endDate)
+    {
+        List<JournalEntry> allEntries = journalEntryDao.findBetweenDates(startDate, endDate);
+
+        return this.toJournalPeriod(allEntries);
+    }
+
+    private JournalPeriod toJournalPeriod(List<JournalEntry> entries)
+    {
         Map<Date, JournalDay> days = new TreeMap<>();
 
         // Fill out the hash map with a day for every day between the first date and the last day
-        Date firstDate       = allEntries.get(0).getEntryTime();
-        Date lastDate        = allEntries.get(allEntries.size() - 1).getEntryTime();
+        Date firstDate       = entries.get(0).getEntryTime();
+        Date lastDate        = entries.get(entries.size() - 1).getEntryTime();
         Date onePastLastDate = DateUtil.addDays(lastDate, 1);
 
         for (Date d = firstDate; !DateUtil.daysEqual(d, onePastLastDate); d = DateUtil.addDays(d, 1)) {
@@ -33,7 +45,7 @@ public class JournalService
         }
 
         // Loop through the entries and place them in their proper days
-        for (JournalEntry entry : allEntries) {
+        for (JournalEntry entry : entries) {
             Date entryDay = DateUtil.truncateToDay(entry.getEntryTime());
 
             JournalDay day = days.get(entryDay);
@@ -50,6 +62,20 @@ public class JournalService
 
     public JournalEntry save(JournalEntry entry)
     {
-        return journalEntryDao.save(entry);
+        JournalEntry result;
+
+        if (entry.getId() != null && entry.getId() > 0) {
+            result = journalEntryDao.update(entry);
+        }
+        else {
+            result = journalEntryDao.insert(entry);
+        }
+
+        return result;
+    }
+
+    public JournalEntry getJournalEntry(long id)
+    {
+        return journalEntryDao.findById(id);
     }
 }

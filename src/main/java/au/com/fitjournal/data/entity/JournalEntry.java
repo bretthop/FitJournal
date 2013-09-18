@@ -1,5 +1,6 @@
 package au.com.fitjournal.data.entity;
 
+import au.com.fitjournal.model.EntryType;
 import au.com.fitjournal.util.DateUtil;
 
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ public class JournalEntry extends BaseEntity
     private String name;
     private BigDecimal kj;
     private Date entryTime;
+    private EntryType type;
 
     public String getName()
     {
@@ -44,5 +46,15 @@ public class JournalEntry extends BaseEntity
     public String getFormattedTime()
     {
         return DateUtil.AM_PM_TIME_FORMAT.format(this.getEntryTime());
+    }
+
+    public EntryType getType()
+    {
+        return type;
+    }
+
+    public void setType(EntryType type)
+    {
+        this.type = type;
     }
 }

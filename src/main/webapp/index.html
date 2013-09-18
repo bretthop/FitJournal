@@ -12,7 +12,14 @@
     <h1>Fit Journal</h1>
     <button onclick="showAddMealDialog()" class="iblock">Add Meal</button>
     <button onclick="showAddWorkoutDialog()" class="iblock">Add Workout</button>
+    <!-- TODO: Make these values dynamic (make them for the current week) -->
+    <label for="startDate">Start Date:</label>
+    <input type="text" id="startDate" value="2013-09-16 00:00:00"/>
+    <label for="endDate">End Date:</label>
+    <input type="text" id="endDate" value="2013-09-22 23:59:59"/>
+    <button onclick="document.location.reload()">Reload</button>
     <div class="totalEnergyHolder">
+        This week net energy: <span class="currentPeriodTotalEnergy">-</span>
         Total net energy: <span class="totalEnergy">-</span>
     </div>
     <div id="daysContainer">
@@ -22,7 +29,7 @@
                     <h2>{{ day.title }}</h2>
 
                     || _.forEach(day.entries, function(entry) { ||
-                        <div class="iblock entryHolder">
+                        <div class="iblock entryHolder" onclick="editEntry('{{entry.id}}')">
                             {{ entry.formattedTime }}
                             <div class="iblock">
                                 <span>Name: {{ entry.name }}</span>
@@ -40,14 +47,16 @@
         </div>
         <div id="addEntryDialogTmpl" class="tmpl">
             <div id="addEntryDialog" class="hidden">
-                <h3>Add {{ entryType }}</h3>
-                <input type="hidden" id="entryModifier" value="{{ modifier }}" />
+                <h3>Add {{ entry.type }}</h3>
+                <input type="hidden" id="entryId" value="{{ entry.id }}" />
+                <input type="hidden" id="entryType" value="{{ entry.type }}" />
+                <input type="hidden" id="entryModifier" value="{{ entry.modifier }}" />
                 <label for="entryTime">Time:</label>
-                <input id="entryTime" type="text" value="{{ date }}" />
+                <input id="entryTime" type="text" value="{{ entry.entryTime }}" />
                 <label for="entryName">Name:</label>
-                <input id="entryName" type="text" />
+                <input id="entryName" type="text" value="{{ entry.name }}" />
                 <label for="entryKj">Kj:</label>
-                <input id="entryKj" type="text" />
+                <input id="entryKj" type="text" value="{{ entry.kj }}" />
                 <button onclick="hideEntryDialog()">Cancel</button>
                 <button onclick="addEntry()">Add</button>
             </div>
@@ -55,22 +64,29 @@
     </div>
 
     <script type="text/javascript">
+        function editEntry(id)
+        {
+            $.ajax({url: '/journalEntry', data: {id: id}, success: function(entry){
+                showAddEntryDialog(entry);
+            }});
+        }
+
         function showAddMealDialog()
         {
-            var props = {entryType: 'Meal', modifier: '', date: formatDate(new Date())};
-            showAddEntryDialog(props);
+            var entry = { type: 'MEAL', modifier: '',  entryTime: formatDate(new Date()) };
+            showAddEntryDialog(entry);
         }
 
         function showAddWorkoutDialog()
         {
-            var props = {entryType: 'Workout', modifier: '-', date: formatDate(new Date())};
-            showAddEntryDialog(props);
+            var entry = { type: 'WORKOUT', modifier: '-',  entryTime: formatDate(new Date()) };
+            showAddEntryDialog(entry);
         }
 
-        function showAddEntryDialog(props)
+        function showAddEntryDialog(entry)
         {
             var addEntryTmpl = tmpl.find('addEntryDialogTmpl');
-            document.getElementsByTagName('body')[0].innerHTML += _.template(addEntryTmpl, props);
+            document.getElementsByTagName('body')[0].innerHTML += _.template(addEntryTmpl, { entry: entry });
 
             $('#addEntryDialog').show();
         }
@@ -79,7 +95,7 @@
         {
             var type = 'POST';
             var url = '/journal';
-            var data = { name: entryName.value, kj: entryModifier.value + entryKj.value, entryTime: entryTime.value};
+            var data = { id: entryId.value, type: entryType.value, name: entryName.value, kj: entryModifier.value + entryKj.value, entryTime: entryTime.value};
 
             $.ajax({type: type, url: url, data: data, success: function() { location.reload(); }});
 
@@ -93,11 +109,27 @@
 
         function getJournalPeriod()
         {
-            $.ajax({url: '/journal', success: function(period){
+            var data = {
+                startDate: document.getElementById('startDate').value,
+                endDate: document.getElementById('endDate').value
+            };
+
+            $.ajax({url: '/journal', data: data, success: function(period){
                 addAdditionalProps(period);
 
                 var dayTmpl = tmpl.find('dayTmpl');
                 daysContainer.innerHTML += _.template(dayTmpl, {days: period.days});
+
+                $('.currentPeriodTotalEnergy').html(period.netKj).addClass(period.colourCss);
+            }});
+        }
+
+        // At the moment this is only being used to get the total energy for the full period
+        // This can be optimised
+        function getFullJournalPeriod()
+        {
+            $.ajax({url: '/journal', success: function(period){
+                addAdditionalProps(period);
 
                 $('.totalEnergy').html(period.netKj).addClass(period.colourCss);
             }});
@@ -118,7 +150,7 @@
 
         function formatDate(date)
         {
-            return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + (date.getDay() + 1) + ' 00:00:00';
+            return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' 00:00:00';
         }
     </script>
 
@@ -131,6 +163,7 @@
         tmpl.scrape();
 
         getJournalPeriod();
+        getFullJournalPeriod();
     </script>
 </body>
 </html>
