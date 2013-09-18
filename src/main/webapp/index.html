@@ -47,7 +47,7 @@
         </div>
         <div id="addEntryDialogTmpl" class="tmpl">
             <div id="addEntryDialog" class="hidden">
-                <h3>Add {{ entry.type }}</h3>
+                <h3>Add {{ entry.type.toLowerCase()  }}</h3>
                 <input type="hidden" id="entryId" value="{{ entry.id }}" />
                 <input type="hidden" id="entryType" value="{{ entry.type }}" />
                 <input type="hidden" id="entryModifier" value="{{ entry.modifier }}" />
@@ -58,7 +58,7 @@
                 <label for="entryKj">Kj:</label>
                 <input id="entryKj" type="text" value="{{ entry.kj }}" />
                 <button onclick="hideEntryDialog()">Cancel</button>
-                <button onclick="addEntry()">Add</button>
+                <button onclick="addEntry()">{{ mode }}</button>
             </div>
         </div>
     </div>
@@ -67,26 +67,26 @@
         function editEntry(id)
         {
             $.ajax({url: '/journalEntry', data: {id: id}, success: function(entry){
-                showAddEntryDialog(entry);
+                showAddEntryDialog(entry, 'Update');
             }});
         }
 
         function showAddMealDialog()
         {
             var entry = { type: 'MEAL', modifier: '',  entryTime: formatDate(new Date()) };
-            showAddEntryDialog(entry);
+            showAddEntryDialog(entry, 'Add');
         }
 
         function showAddWorkoutDialog()
         {
             var entry = { type: 'WORKOUT', modifier: '-',  entryTime: formatDate(new Date()) };
-            showAddEntryDialog(entry);
+            showAddEntryDialog(entry, 'Add');
         }
 
-        function showAddEntryDialog(entry)
+        function showAddEntryDialog(entry, mode)
         {
             var addEntryTmpl = tmpl.find('addEntryDialogTmpl');
-            document.getElementsByTagName('body')[0].innerHTML += _.template(addEntryTmpl, { entry: entry });
+            document.getElementsByTagName('body')[0].innerHTML += _.template(addEntryTmpl, { entry: entry, mode: mode });
 
             $('#addEntryDialog').show();
         }
