@@ -27,4 +27,15 @@ public class JournalPeriod
 
         return result;
     }
+
+    public BigDecimal getTotalProtein()
+    {
+        BigDecimal result = BigDecimal.ZERO;
+
+        for (JournalDay day : this.getDays()) {
+            result = result.add(day.getTotalProtein());
+        }
+
+        return result;
+    }
 }

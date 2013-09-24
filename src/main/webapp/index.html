@@ -14,13 +14,17 @@
     <button onclick="showAddWorkoutDialog()" class="iblock">Add Workout</button>
     <!-- TODO: Make these values dynamic (make them for the current week) -->
     <label for="startDate">Start Date:</label>
-    <input type="text" id="startDate" value="2013-09-16 00:00:00"/>
+    <input type="text" id="startDate" value="2013-09-23 00:00:00"/>
     <label for="endDate">End Date:</label>
-    <input type="text" id="endDate" value="2013-09-22 23:59:59"/>
+    <input type="text" id="endDate" value="2013-09-29 23:59:59"/>
     <button onclick="document.location.reload()">Reload</button>
     <div class="totalEnergyHolder">
         This week net energy: <span class="currentPeriodTotalEnergy">-</span>
         Total net energy: <span class="totalEnergy">-</span>
+    </div>
+    <div class="totalEnergyHolder">
+        This week total protein: <span class="currentPeriodTotalProtein">-</span>
+        Total protein: <span class="totalProtein">-</span>
     </div>
     <div id="daysContainer">
         <div id="dayTmpl" class="tmpl">
@@ -34,12 +38,16 @@
                             <div class="iblock">
                                 <span>Name: {{ entry.name }}</span>
                                 <span>Energy: <span class="{{ entry.colourCss }}">{{ entry.kj }}</span></span>
+                                <span>Protein: {{ entry.protein }}</span>
                             </div>
                         </div>
                     || }); ||
 
                     <div class="dayTotal">
                         Net KJ: <span class="{{ day.colourCss }}">{{ day.netKj }}</span>
+                    </div>
+                    <div class="dayTotal">
+                        Total Protein: {{ day.totalProtein }}
                     </div>
                 </div>
             || }); ||
@@ -57,6 +65,8 @@
                 <input id="entryName" type="text" value="{{ entry.name }}" />
                 <label for="entryKj">Kj:</label>
                 <input id="entryKj" type="text" value="{{ entry.kj }}" />
+                <label for="entryProtein">Protein:</label>
+                <input id="entryProtein" type="text" value="{{ entry.protein }}" />
                 <button onclick="hideEntryDialog()">Cancel</button>
                 <button onclick="addEntry()">{{ mode }}</button>
             </div>
@@ -95,7 +105,14 @@
         {
             var type = 'POST';
             var url = '/journal';
-            var data = { id: entryId.value, type: entryType.value, name: entryName.value, kj: entryModifier.value + entryKj.value, entryTime: entryTime.value};
+            var data = {
+                id: entryId.value,
+                type: entryType.value,
+                name: entryName.value,
+                kj: entryModifier.value + entryKj.value,
+                protein: entryProtein.value,
+                entryTime: entryTime.value
+            };
 
             $.ajax({type: type, url: url, data: data, success: function() { location.reload(); }});
 
@@ -121,6 +138,7 @@
                 daysContainer.innerHTML += _.template(dayTmpl, {days: period.days});
 
                 $('.currentPeriodTotalEnergy').html(period.netKj).addClass(period.colourCss);
+                $('.currentPeriodTotalProtein').html(period.totalProtein);
             }});
         }
 
@@ -132,6 +150,7 @@
                 addAdditionalProps(period);
 
                 $('.totalEnergy').html(period.netKj).addClass(period.colourCss);
+                $('.totalProtein').html(period.totalProtein);
             }});
         }
 

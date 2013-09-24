@@ -14,6 +14,7 @@ public class JournalFactory
         String id           = req.getParameter("id");
         String name         = req.getParameter("name");
         String kj           = req.getParameter("kj");
+        String protein      = req.getParameter("protein");
         String entryTimeStr = req.getParameter("entryTime");
         String type         = req.getParameter("type");
 
@@ -22,6 +23,7 @@ public class JournalFactory
         entry.setId(id != null && id.length() > 0 ? Long.parseLong(id) : null);
         entry.setName(name);
         entry.setKj(new BigDecimal(kj));
+        entry.setProtein(new BigDecimal(protein));
         entry.setEntryTime(DateUtil.parse(entryTimeStr, DateUtil.FULL_DATE_FORMAT));
         entry.setType(EntryType.valueOf(type));
 

@@ -10,6 +10,7 @@ public class JournalEntry extends BaseEntity
 {
     private String name;
     private BigDecimal kj;
+    private BigDecimal protein;
     private Date entryTime;
     private EntryType type;
 
@@ -31,6 +32,16 @@ public class JournalEntry extends BaseEntity
     public void setKj(BigDecimal kj)
     {
         this.kj = kj;
+    }
+
+    public BigDecimal getProtein()
+    {
+        return protein;
+    }
+
+    public void setProtein(BigDecimal protein)
+    {
+        this.protein = protein;
     }
 
     public Date getEntryTime()

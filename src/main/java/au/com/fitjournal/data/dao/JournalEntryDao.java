@@ -71,8 +71,8 @@ public class JournalEntryDao
                 Connection conn = ConnectionManager.getConnection();
                 Statement stmt = conn.createStatement()
         ) {
-            String sql = String.format("UPDATE journal_entry SET name = '%s', kj = %s, entryTime = '%s', type = '%s' WHERE id = %s",
-                                        entity.getName(), entity.getKj(), entity.getEntryTime(), entity.getType().name(), entity.getId());
+            String sql = String.format("UPDATE journal_entry SET name = '%s', kj = %s, protein = %s, entryTime = '%s', type = '%s' WHERE id = %s",
+                                        entity.getName(), entity.getKj(), entity.getProtein(), entity.getEntryTime(), entity.getType().name(), entity.getId());
 
             stmt.executeUpdate(sql);
 
@@ -90,8 +90,8 @@ public class JournalEntryDao
                 Connection conn = ConnectionManager.getConnection();
                 Statement stmt = conn.createStatement()
         ) {
-            String sql = "INSERT INTO journal_entry (name, kj, entryTime, type) VALUES ";
-            sql += String.format("('%s', %s, '%s', '%s')", entity.getName(), entity.getKj(), entity.getEntryTime(), entity.getType().name());
+            String sql = "INSERT INTO journal_entry (name, kj, protein, entryTime, type) VALUES ";
+            sql += String.format("('%s', %s, %s, '%s', '%s')", entity.getName(), entity.getKj(), entity.getProtein(), entity.getEntryTime(), entity.getType().name());
 
             stmt.executeUpdate(sql);
 
@@ -128,7 +128,7 @@ public class JournalEntryDao
     }
 
     /**
-     * @param rs - Should have a valid entity lined up and ready to be accessed
+     * @param rs - Should have a valid result lined up and ready to be accessed
      * @return the mapped entity
      */
     private JournalEntry fromResult(ResultSet rs) throws SQLException
@@ -138,6 +138,7 @@ public class JournalEntryDao
         entity.setId(rs.getLong("id"));
         entity.setName(rs.getString("name"));
         entity.setKj(rs.getBigDecimal("kj"));
+        entity.setProtein(rs.getBigDecimal("protein"));
         entity.setEntryTime(rs.getTimestamp("entryTime"));
         entity.setType(EntryType.valueOf(rs.getString("type")));
 

@@ -73,4 +73,19 @@ public class JournalDay
 
         return result.subtract(STANDARD_DAILY_KJ);
     }
+
+    public BigDecimal getTotalProtein()
+    {
+        BigDecimal result = BigDecimal.ZERO;
+
+        if (this.getEntries() != null) {
+            for (JournalEntry entry : this.getEntries()) {
+                if (entry.getProtein() != null) {
+                    result = result.add(entry.getProtein());
+                }
+            }
+        }
+
+        return result;
+    }
 }
