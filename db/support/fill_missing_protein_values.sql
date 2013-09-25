@@ -9,3 +9,6 @@ UPDATE journal_entry SET protein = 16 WHERE type = 'MEAL' AND LOWER(name) = 'tun
 
 -- Matches all sandwiches x2 (There are a variety of names used, and some with spelling mistakes... but they all contain x and 2)
 UPDATE journal_entry SET protein = 15 WHERE type = 'MEAL' AND LOWER(name) LIKE 's%x%2%';
+
+-- Matches all mince toasties
+UPDATE journal_entry SET protein = 16 WHERE type = 'MEAL' AND LOWER(name) LIKE '%mince%';
