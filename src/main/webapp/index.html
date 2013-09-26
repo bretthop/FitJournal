@@ -34,7 +34,7 @@
 
                     || _.forEach(day.entries, function(entry) { ||
                         <div class="iblock entryHolder">
-                            {{ entry.formattedTime }} <span class="pointer red" onclick="deleteEntry('{{entry.id}}')">delete</span>
+                            {{ entry.formattedTime }} <span class="pointer red" onclick="deleteEntry('{{entry.id}}')">X</span>
                             <div class="iblock pointer" onclick="editEntry('{{entry.id}}')">
                                 <span>Name: {{ entry.name }}</span>
                                 <span>Energy: <span class="{{ entry.colourCss }}">{{ entry.kj }}</span></span>
@@ -80,9 +80,11 @@
     <script type="text/javascript">
         function deleteEntry(id)
         {
-            $.ajax({url: '/deleteJournalEntry', type: 'POST', data: {id: id}, success: function() {
-                location.reload();
-            }});
+            if (confirm('Are you sure you want to delete this item?')) {
+                $.ajax({url: '/deleteJournalEntry', type: 'POST', data: {id: id}, success: function() {
+                    location.reload();
+                }});
+            }
         }
 
         function editEntry(id)
