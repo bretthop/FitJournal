@@ -18,9 +18,9 @@ public class JournalEntryDao
     public List<JournalEntry> findAll()
     {
         try (
-                Connection conn = ConnectionManager.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM journal_entry ORDER BY entryTime"))
+            Connection conn = ConnectionManager.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM journal_entry ORDER BY entryTime"))
         ) {
             return this.mapResultsToList(rs);
         }
@@ -33,14 +33,14 @@ public class JournalEntryDao
     public List<JournalEntry> findBetweenDates(Date startDate, Date endDate)
     {
         try (
-                Connection conn = ConnectionManager.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(
-                    String.format(
-                        "SELECT * FROM journal_entry WHERE entryTime >= '%s' AND entryTime <= '%s' ORDER BY entryTime",
-                        DateUtil.format(startDate, DateUtil.FULL_DATE_FORMAT), DateUtil.format(endDate, DateUtil.FULL_DATE_FORMAT)
-                    )
+            Connection conn = ConnectionManager.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(
+                String.format(
+                    "SELECT * FROM journal_entry WHERE entryTime >= '%s' AND entryTime <= '%s' ORDER BY entryTime",
+                    DateUtil.format(startDate, DateUtil.FULL_DATE_FORMAT), DateUtil.format(endDate, DateUtil.FULL_DATE_FORMAT)
                 )
+            )
         ) {
             return this.mapResultsToList(rs);
         }
@@ -53,9 +53,9 @@ public class JournalEntryDao
     public JournalEntry findById(long id)
     {
         try (
-                Connection conn = ConnectionManager.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM journal_entry WHERE id = %s", id))
+            Connection conn = ConnectionManager.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM journal_entry WHERE id = %s", id))
         ) {
             return this.mapResultsToEntry(rs);
         }
@@ -68,8 +68,8 @@ public class JournalEntryDao
     public JournalEntry update(JournalEntry entity)
     {
         try (
-                Connection conn = ConnectionManager.getConnection();
-                Statement stmt = conn.createStatement()
+            Connection conn = ConnectionManager.getConnection();
+            Statement stmt = conn.createStatement()
         ) {
             String sql = String.format("UPDATE journal_entry SET name = '%s', kj = %s, protein = %s, entryTime = '%s', type = '%s' WHERE id = %s",
                                         entity.getName(), entity.getKj(), entity.getProtein(), entity.getEntryTime(), entity.getType().name(), entity.getId());
@@ -87,8 +87,8 @@ public class JournalEntryDao
     public JournalEntry insert(JournalEntry entity)
     {
         try (
-                Connection conn = ConnectionManager.getConnection();
-                Statement stmt = conn.createStatement()
+            Connection conn = ConnectionManager.getConnection();
+            Statement stmt = conn.createStatement()
         ) {
             String sql = "INSERT INTO journal_entry (name, kj, protein, entryTime, type) VALUES ";
             sql += String.format("('%s', %s, %s, '%s', '%s')", entity.getName(), entity.getKj(), entity.getProtein(), entity.getEntryTime(), entity.getType().name());
@@ -96,6 +96,22 @@ public class JournalEntryDao
             stmt.executeUpdate(sql);
 
             return entity;
+        }
+        catch (Exception e) {
+            // TODO: Add logging
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void delete(long id)
+    {
+        try (
+            Connection conn = ConnectionManager.getConnection();
+            Statement stmt = conn.createStatement()
+        ) {
+            String sql = String.format("DELETE FROM journal_entry WHERE id = %s", id);
+
+            stmt.executeUpdate(sql);
         }
         catch (Exception e) {
             // TODO: Add logging

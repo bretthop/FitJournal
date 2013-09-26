@@ -78,4 +78,9 @@ public class JournalService
     {
         return journalEntryDao.findById(id);
     }
+
+    public void deleteEntry(long id)
+    {
+        journalEntryDao.delete(id);
+    }
 }

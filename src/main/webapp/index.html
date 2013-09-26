@@ -33,9 +33,9 @@
                     <h2>{{ day.title }}</h2>
 
                     || _.forEach(day.entries, function(entry) { ||
-                        <div class="iblock entryHolder" onclick="editEntry('{{entry.id}}')">
-                            {{ entry.formattedTime }}
-                            <div class="iblock">
+                        <div class="iblock entryHolder">
+                            {{ entry.formattedTime }} <span class="pointer red" onclick="deleteEntry('{{entry.id}}')">delete</span>
+                            <div class="iblock pointer" onclick="editEntry('{{entry.id}}')">
                                 <span>Name: {{ entry.name }}</span>
                                 <span>Energy: <span class="{{ entry.colourCss }}">{{ entry.kj }}</span></span>
                                 || if (entry.type == 'MEAL') { ||
@@ -78,6 +78,13 @@
     </div>
 
     <script type="text/javascript">
+        function deleteEntry(id)
+        {
+            $.ajax({url: '/deleteJournalEntry', type: 'POST', data: {id: id}, success: function() {
+                location.reload();
+            }});
+        }
+
         function editEntry(id)
         {
             $.ajax({url: '/journalEntry', data: {id: id}, success: function(entry){
