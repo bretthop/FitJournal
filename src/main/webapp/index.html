@@ -38,7 +38,9 @@
                             <div class="iblock">
                                 <span>Name: {{ entry.name }}</span>
                                 <span>Energy: <span class="{{ entry.colourCss }}">{{ entry.kj }}</span></span>
-                                <span>Protein: {{ entry.protein }}</span>
+                                || if (entry.type == 'MEAL') { ||
+                                    <span>Protein: {{ entry.protein }}</span>
+                                || } ||
                             </div>
                         </div>
                     || }); ||
@@ -65,8 +67,10 @@
                 <input id="entryName" type="text" value="{{ entry.name }}" />
                 <label for="entryKj">Kj:</label>
                 <input id="entryKj" type="text" value="{{ entry.kj }}" />
-                <label for="entryProtein">Protein:</label>
-                <input id="entryProtein" type="text" value="{{ entry.protein }}" />
+                || if (entry.type == 'MEAL') { ||
+                    <label for="entryProtein">Protein:</label>
+                    <input id="entryProtein" type="text" value="{{ entry.protein }}" />
+                || } ||
                 <button onclick="hideEntryDialog()">Cancel</button>
                 <button onclick="addEntry()">{{ mode }}</button>
             </div>
@@ -110,7 +114,7 @@
                 type: entryType.value,
                 name: entryName.value,
                 kj: entryModifier.value + entryKj.value,
-                protein: entryProtein.value,
+                protein: typeof(entryProtein) !== 'undefined' ? entryProtein.value : '', // protein is not always available (workout)
                 entryTime: entryTime.value
             };
 
