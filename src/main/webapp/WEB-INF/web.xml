@@ -28,7 +28,7 @@
 
     <servlet-mapping>
         <servlet-name>mvc-dispatcher</servlet-name>
-        <url-pattern>/v2/*</url-pattern>
+        <url-pattern>/fitJournal/*</url-pattern>
     </servlet-mapping>
 
     <listener>

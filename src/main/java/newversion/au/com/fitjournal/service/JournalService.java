@@ -16,6 +16,9 @@ public class JournalService
     @Resource
     private JournalDao journalDao;
 
+    @Resource
+    private WeightService weightService;
+
     public JournalPeriod getFullJournalPeriod()
     {
         List<JournalEntity> allEntries = journalDao.findAll();
@@ -49,6 +52,8 @@ public class JournalService
 
             JournalDay day = new JournalDay();
             day.setDate(truncatedDate);
+
+            weightService.addTargetDailyIntake(day);
 
             days.put(truncatedDate, day);
         }

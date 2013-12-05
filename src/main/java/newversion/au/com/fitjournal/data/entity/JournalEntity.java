@@ -1,6 +1,6 @@
 package newversion.au.com.fitjournal.data.entity;
 
-import au.com.fitjournal.util.DateUtil;
+import newversion.au.com.fitjournal.util.DateUtil;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

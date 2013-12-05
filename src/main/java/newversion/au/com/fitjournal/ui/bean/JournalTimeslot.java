@@ -1,6 +1,6 @@
 package newversion.au.com.fitjournal.ui.bean;
 
-import au.com.fitjournal.data.entity.JournalEntry;
+import newversion.au.com.fitjournal.data.entity.JournalEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 public class JournalTimeslot
 {
     private Date timeslotTime;
-    private List<JournalEntry> entries;
+    private List<JournalEntity> entries;
 
     public Date getTimeslotTime()
     {
@@ -20,12 +20,12 @@ public class JournalTimeslot
         this.timeslotTime = timeslotTime;
     }
 
-    public List<JournalEntry> getEntries()
+    public List<JournalEntity> getEntries()
     {
         return entries;
     }
 
-    public void setEntries(List<JournalEntry> entries)
+    public void setEntries(List<JournalEntity> entries)
     {
         this.entries = entries;
     }

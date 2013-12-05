@@ -1,17 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>FitJournal</title>
-
-    <script type="text/javascript" src="../res/js/lib/jquery-1.8.3.js"></script>
-    <script type="text/javascript" src="../res/js/lib/underscore.js"></script>
-    <script type="text/javascript" src="../res/js/tmpl.js"></script>
-    <script type="text/javascript" src="../res/js/lib/bootstrap.min.js"></script>
-
-    <link media="all" rel="stylesheet" type="text/css" href="../res/css/fitJournal.css" />
-    <link media="all" rel="stylesheet" type="text/css" href="../res/css/lib/bootstrap.min.css" />
-</head>
-<body>
+<%@ include file="header.jsp" %>
 <h1>Fit Journal</h1>
 <button onclick="showAddMealDialog()" class="iblock">Add Meal</button>
 <button onclick="showAddWorkoutDialog()" class="iblock">Add Workout</button>
@@ -48,6 +35,9 @@
             </div>
             || }); ||
 
+            <div class="dayTotal">
+                Target Daily Intake: {{ day.targetDailyIntake }}
+            </div>
             <div class="dayTotal">
                 Net KJ: <span class="{{ day.colourCss }}">{{ day.netKj }}</span>
             </div>
@@ -200,5 +190,4 @@
     getJournalPeriod();
     getFullJournalPeriod();
 </script>
-</body>
-</html>
+<%@ include file="footer.jsp" %>

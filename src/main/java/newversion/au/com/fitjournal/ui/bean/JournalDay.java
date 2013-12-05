@@ -1,6 +1,6 @@
 package newversion.au.com.fitjournal.ui.bean;
 
-import au.com.fitjournal.util.DateUtil;
+import newversion.au.com.fitjournal.util.DateUtil;
 import newversion.au.com.fitjournal.data.entity.JournalEntity;
 
 import java.math.BigDecimal;
@@ -13,6 +13,7 @@ public class JournalDay
     private Date date;
     private List<JournalEntity> entries;
     private List<JournalTimeslot> timeslots;
+    private BigDecimal targetDailyIntake;
 
     public JournalDay()
     {
@@ -59,10 +60,18 @@ public class JournalDay
         this.timeslots = timeslots;
     }
 
+    public BigDecimal getTargetDailyIntake()
+    {
+        return targetDailyIntake;
+    }
+
+    public void setTargetDailyIntake(BigDecimal targetDailyIntake)
+    {
+        this.targetDailyIntake = targetDailyIntake;
+    }
+
     public BigDecimal getNetKj()
     {
-        BigDecimal STANDARD_DAILY_KJ = new BigDecimal("8700");
-
         BigDecimal result = BigDecimal.ZERO;
 
         if (this.getEntries() != null) {
@@ -71,7 +80,7 @@ public class JournalDay
             }
         }
 
-        return result.subtract(STANDARD_DAILY_KJ);
+        return result.subtract(this.targetDailyIntake);
     }
 
     public BigDecimal getTotalProtein()
