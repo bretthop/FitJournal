@@ -1,0 +1,48 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+    <!-- Enables @Service, @Controller, @Repository -->
+    <context:component-scan base-package="newversion.au.com.fitjournal" />
+
+    <!-- Enables advanced features of Controllers (attempting json serialisation, bean validation) -->
+    <mvc:annotation-driven />
+
+    <!-- Handles HTTP GET requests for /res/** by efficiently serving up static resources in the ${webappRoot}/res directory -->
+    <mvc:resources mapping="/res/**" location="/res/" />
+
+    <!-- Kicks off spring validation -->
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+
+    <!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- Setup c3p0 datasource pooling -->
+    <bean id="fitJournalDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <!-- These can be injected by Maven during build -->
+        <property name="user" value="postgres" />
+        <property name="password" value="password" />
+        <property name="driverClass" value="org.postgresql.Driver" />
+        <property name="jdbcUrl" value="jdbc:postgresql://localhost/fitjournal" />
+
+        <property name="initialPoolSize" value="5" />
+        <property name="maxPoolSize" value="20" />
+        <property name="minPoolSize" value="5" />
+        <property name="acquireIncrement" value="5" />
+    </bean>
+
+    <!-- Other database config (transaction managing) -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+    <bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager">
+        <property name="entityManagerFactory" ref="localContainerEntityManagerFactoryBean" />
+    </bean>
+</beans>
