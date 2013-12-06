@@ -17,7 +17,7 @@ public class JournalDay
 
     public JournalDay()
     {
-        this.entries = new ArrayList<>();
+        this.entries = new ArrayList<JournalEntity>();
     }
 
     public Date getDate()

@@ -40,7 +40,7 @@ public class JournalService
 
     private JournalPeriod toJournalPeriod(List<JournalEntity> entries)
     {
-        Map<Date, JournalDay> days = new TreeMap<>();
+        Map<Date, JournalDay> days = new TreeMap<Date, JournalDay>();
 
         // Fill out the hash map with a day for every day between the first date and the last day
         Date firstDate       = entries.get(0).getEntryTime();
@@ -69,7 +69,7 @@ public class JournalService
 
         JournalPeriod period = new JournalPeriod();
 
-        period.setDays(new ArrayList<>(days.values()));
+        period.setDays(new ArrayList<JournalDay>(days.values()));
 
         return period;
     }

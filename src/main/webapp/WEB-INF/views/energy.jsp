@@ -4,9 +4,9 @@
 <button onclick="showAddWorkoutDialog()" class="iblock">Add Workout</button>
 <!-- TODO: Make these values dynamic (make them for the current week) -->
 <label for="startDate">Start Date:</label>
-<input type="text" id="startDate" value="2013-10-28 00:00:00"/>
+<input type="text" id="startDate" value="2013-12-02 00:00:00"/>
 <label for="endDate">End Date:</label>
-<input type="text" id="endDate" value="2013-11-03 23:59:59"/>
+<input type="text" id="endDate" value="2013-12-08 23:59:59"/>
 <button onclick="document.location.reload()">Reload</button>
 <div class="totalEnergyHolder">
     This week net energy: <span class="currentPeriodTotalEnergy">-</span>
@@ -117,7 +117,7 @@
             name: entryName.value,
             kj: entryModifier.value + entryKj.value,
             protein: typeof(entryProtein) !== 'undefined' ? entryProtein.value : '', // protein is not always available (workout)
-            entryTime: entryTime.value
+            entryTimeStr: entryTime.value
         };
 
         $.ajax({type: type, url: url, data: JSON.stringify(data), contentType: 'application/json', success: function() { location.reload(); }});

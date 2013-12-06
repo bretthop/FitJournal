@@ -12,38 +12,38 @@
     
 	<!-- Application Loggers -->
 	<logger name="newversion.au.com.fitjournal">
-		<level value="INFO" />
+		<level value="FINE" />
 	</logger>
 	
 	<!-- 3rd party Loggers -->
 	<logger name="org.springframework.core">
-		<level value="INFO" />
+		<level value="FINE" />
 	</logger>
 	
 	<logger name="org.springframework.beans">
-		<level value="INFO" />
+		<level value="FINE" />
 	</logger>
 	
 	<logger name="org.springframework.context">
-		<level value="INFO" />
+		<level value="FINE" />
 	</logger>
 
 	<logger name="org.springframework.web">
-		<level value="INFO" />
+		<level value="FINE" />
 
 	</logger>
 
     <logger name="org.springframework.security">
-		<level value="INFO" />
+		<level value="FINE" />
 	</logger>
 
     <logger name="org.hibernate">
-		<level value="INFO" />
+		<level value="FINE" />
 	</logger>
 
 	<!-- Root Logger -->
 	<root>
-		<priority value="INFO" />
+		<priority value="FINE" />
 		<appender-ref ref="console" />
 	</root>
 	

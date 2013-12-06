@@ -1,9 +1,13 @@
 <%@ include file="header.jsp" %>
-<h1>Weight Management</h1>
+<h1>Weight</h1>
 <div class="container">
     <label for="targetWeight">Target Weight:</label>
     <input id="targetWeight" name="targetWeight" type="text" />
     <button class="btn" onclick="saveTargetWeight()">Save!</button>
+</div>
+<div class="container">
+    <label for="actualWeight">Actual Weight:</label>
+    <input id="actualWeight" name="actualWeight" type="text" readonly="true" />
 </div>
 <script type="text/javascript">
     function saveTargetWeight()
@@ -25,9 +29,25 @@
         $.ajax({type: type, url: url, success: function(data) { targetWeight.value = data.target; }});
 
     }
+
+    function getActualWeight()
+    {
+        var type = 'GET';
+        var url = '/fitJournal/api/weightLog';
+
+        $.ajax({type: type, url: url, success: function(data) {
+            if (!data.weight) {
+                data.weight = 'No Weight for today';
+            }
+
+            actualWeight.value = data.weight;
+        }});
+
+    }
 </script>
 
 <script type="text/javascript">
     getTargetWeight();
+    getActualWeight();
 </script>
 <%@ include file="footer.jsp" %>

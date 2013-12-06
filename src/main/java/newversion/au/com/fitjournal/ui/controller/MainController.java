@@ -12,12 +12,7 @@ public class MainController
     @RequestMapping()
     public String index(ModelMap model)
     {
-        NavBean navBean = new NavBean("index");
-        navBean.setCurrentUser(this.createDummyUser());
-
-        model.addAttribute("navBean", navBean);
-
-        return "index";
+        return this.weight(model);
     }
 
     @RequestMapping("/weight")

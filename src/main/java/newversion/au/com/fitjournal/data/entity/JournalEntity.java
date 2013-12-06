@@ -1,6 +1,7 @@
 package newversion.au.com.fitjournal.data.entity;
 
 import newversion.au.com.fitjournal.util.DateUtil;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -23,6 +24,10 @@ public class JournalEntity
     private String name;
     private BigDecimal kj;
     private BigDecimal protein;
+
+    @Transient
+    private String entryTimeStr;
+
     private Date entryTime;
     private String type;
 
@@ -74,6 +79,16 @@ public class JournalEntity
     public void setEntryTime(Date entryTime)
     {
         this.entryTime = entryTime;
+    }
+
+    public String getEntryTimeStr()
+    {
+        return entryTimeStr;
+    }
+
+    public void setEntryTimeStr(String entryTimeStr)
+    {
+        this.entryTimeStr = entryTimeStr;
     }
 
     public String getFormattedTime()
