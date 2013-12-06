@@ -2,6 +2,7 @@ package newversion.au.com.fitjournal.ui.resource;
 
 import newversion.au.com.fitjournal.data.entity.WeightEntity;
 import newversion.au.com.fitjournal.data.entity.WeightLogEntity;
+import newversion.au.com.fitjournal.service.FitBitService;
 import newversion.au.com.fitjournal.service.WeightService;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,9 @@ public class WeightLogResource
     @Resource
     private WeightService weightService;
 
+    @Resource
+    private FitBitService fitBitService;
+
     @RequestMapping()
     public @ResponseBody WeightLogEntity getActualWeight()
     {
@@ -34,5 +38,13 @@ public class WeightLogResource
         now.set(Calendar.SECOND, 0);
         now.set(Calendar.MILLISECOND, 0);
         return weightService.getFitBitWeight(now.getTime());
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    public @ResponseBody boolean deleteWeightLog()
+    {
+        fitBitService.deleteFitBitData();
+
+        return true;
     }
 }

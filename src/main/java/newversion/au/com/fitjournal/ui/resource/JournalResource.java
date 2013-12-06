@@ -49,8 +49,10 @@ public class JournalResource
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteInstance(@PathVariable("id") long id)
+    public @ResponseBody boolean deleteInstance(@PathVariable("id") long id)
     {
         journalService.deleteEntry(id);
+
+        return true;
     }
 }

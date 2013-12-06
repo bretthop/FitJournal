@@ -27,4 +27,9 @@ public class FitBitService
             weightLogDao.save(weightLogEntity);
         }
     }
+
+    public void deleteFitBitData()
+    {
+        weightLogDao.deleteAll();
+    }
 }

@@ -80,6 +80,7 @@ public class FitbitServlet extends HttpServlet
 
                 fitBitService.importFitBitWeightLog(weightLog);
 
+                request.getRequestDispatcher("/fitJournal/weight").forward(request, response);
             } catch (FitbitAPIException e) {
                 throw new ServletException("Exception during getting user info", e);
             }
