@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -76,9 +77,18 @@ public class FitbitServlet extends HttpServlet
                 }
             }
             try {
-                List<WeightLog> weightLog = apiClientService.getClient().getLoggedWeight(new LocalUserDetail(resourceCredentials.getLocalUserId()), new FitbitUser(resourceCredentials.getLocalUserId()), LocalDate.fromDateFields(new Date()), DataPeriod.ONE_MONTH);
+                List<WeightLog> totalWeightLog = new ArrayList<WeightLog>();
 
-                fitBitService.importFitBitWeightLog(weightLog);
+                // TODO: Tomahawk has really got crazy here
+                List<WeightLog> weightLog1 = apiClientService.getClient().getLoggedWeight(new LocalUserDetail(resourceCredentials.getLocalUserId()), new FitbitUser(resourceCredentials.getLocalUserId()), LocalDate.fromDateFields(new Date()).minusMonths(2), DataPeriod.ONE_MONTH);
+                List<WeightLog> weightLog2 = apiClientService.getClient().getLoggedWeight(new LocalUserDetail(resourceCredentials.getLocalUserId()), new FitbitUser(resourceCredentials.getLocalUserId()), LocalDate.fromDateFields(new Date()).minusMonths(1), DataPeriod.ONE_MONTH);
+                List<WeightLog> weightLog3 = apiClientService.getClient().getLoggedWeight(new LocalUserDetail(resourceCredentials.getLocalUserId()), new FitbitUser(resourceCredentials.getLocalUserId()), LocalDate.fromDateFields(new Date()), DataPeriod.ONE_MONTH);
+
+                totalWeightLog.addAll(weightLog1);
+                totalWeightLog.addAll(weightLog2);
+                totalWeightLog.addAll(weightLog3);
+
+                fitBitService.importFitBitWeightLog(totalWeightLog);
 
                 request.getRequestDispatcher("/fitJournal/weight").forward(request, response);
             } catch (FitbitAPIException e) {
