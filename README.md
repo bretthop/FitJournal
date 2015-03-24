@@ -2,14 +2,14 @@
 
 An application to help you keep track of your food intake, as well as the exercise that you do.
 
-###What it does do
+###What it DOES
 
   - Logs your Kilojoule and Protein intake of each meal
   - Logs the Kilojoules burnt for each workout
   - Gives you the amount of Kilojoules you burnt (or didn't) during a day, week, month, etc
   - Gives you the total protein intake of each day, week, month, etc
 
-###What it DOESN'T do (yet... these are TODOS)
+###What it DOES NOT (yet... these are TODOS)
 
   - Keep a catalog of previously added meals (and workouts) so you don't have to add
     the specific Kilojoule and Protein information each time
